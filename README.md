@@ -73,12 +73,12 @@ You can enter `$ just black` to run black on your code. `$ just black-check` wil
 
 ## Technical Stuff
 
-## Notes on the Problem Template
+### Notes on the Problem Template
 The output of `parse_input` is passed to `part_1` and `part_2` by the code running script. If these functions are renamed, or if they are made to return something that doesn't fit this flow, the `just` interface will stop working as expected.
 
-## Notes on Tests
+### Notes on Tests
 The tests included in the template are very basic. There are a few tests to guard against obvious faults in input parsing, and then 4 tests that check your `part_1` and `part_2` code using both the sample and full inputs. **Note** you'll need to replace the 0s in the tests with the correct answers, once you know them.
 The `just` interface doesn't do anything sophisticated with the tests, so you can add, remove, or rename whatever you like in here without disrupting much.
 
-## Logging
+### Logging
 By default, code will be run with a logging level of `WARNING`, but `$ just debug 2 1` will run part 1 of day 2 using sample input with the logging level set to `DEGBUG`. This allows you to include logging statements that are helpful while working through a problem, but won't clutter your output when you're solving.
