@@ -44,7 +44,7 @@
     pytest --ignore templates
 
 # Runs a timed execution of all regestered complete problems
-@race:
+@benchmark:
     python3 problem_runner.py
 
 # Creates config-secret.toml

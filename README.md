@@ -57,9 +57,9 @@ Solving works just like checking, but it will use the full puzzle input instead 
 
 `$ just solve 2 1` will run part 1 of day 2 using the full input.
 
-### Time-Trial
-As you complete daily puzzles, add each day's number to the list of 'Registered Problems' in `config.toml`. 
-Running `$ just race` will execute both parts of every registered problem with a timer running, and show you how long each problem took to complete.
+### Benchmark
+As you complete daily puzzles, add each day's number to the list of registered problems in `config.toml`. 
+Running `$ just benchmark` will execute both parts of every registered problem with a timer running, and show you how long it took to run all your solutions, with splits for each day.
 
 
 ### Running Tests

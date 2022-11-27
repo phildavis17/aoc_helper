@@ -3,7 +3,7 @@ year = 2022
 author = ""
 
 
-[time-trial]
+[benchmark]
 registered_problems = [
     
 ]

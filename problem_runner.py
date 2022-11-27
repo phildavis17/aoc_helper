@@ -15,14 +15,14 @@ def get_config(config_path: Path = None) -> dict:
     return config
 
 
-def time_trial(config: dict) -> None:
+def benchmark(config: dict) -> None:
     """Tracks the time taken to run every problem registered as complete in the config file."""
-    problems = config["time-trial"]["registered_problems"]
+    problems = config["benchmark"]["registered_problems"]
     year = config["setup"]["year"]
 
     start_time = time.perf_counter()
     last_split = start_time
-    print(f"\nAdvent of Code {year} Time Trial\n")
+    print(f"\nAdvent of Code {year} Benchmark\n")
     for day in problems:
         run_problem(day, "solve", 1, year=year, quiet=True)
         run_problem(day, "solve", 2, year=year, quiet=True)
@@ -80,6 +80,6 @@ def cli(config):
 if __name__ == "__main__":
     config = get_config(CONFIG_FILE)
     if len(sys.argv) == 1:
-        time_trial(config)
+        benchmark(config)
     else:
         cli(config)
