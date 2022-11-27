@@ -5,7 +5,7 @@ The intent of this repo is to provide a convenient, orderly framework for solvin
  - Easily create a new folder with template files for each day's problem, and automatically download that day's input
  - Run your solution code using either sample input or the full problem input
  - Time your completed solutions to see how efficient your code is
- - Apply linting and basic tests
+ - Apply formatting and basic tests
  - Do all this using a convenient command runner interface
 
 
@@ -59,7 +59,7 @@ Solving works just like checking, but it will use the full puzzle input instead 
 
 ### Time-Trial
 As you complete daily puzzles, add each day's number to the list of 'Registered Problems' in `config.toml`. 
-Running `$ just race` will execute both parts of every registered problem with a timer running, 
+Running `$ just race` will execute both parts of every registered problem with a timer running, and show you how long each problem took to complete.
 
 
 ### Running Tests
