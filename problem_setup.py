@@ -3,6 +3,7 @@ import requests
 import shutil
 import tomli
 
+from hashlib import md5
 from pathlib import Path
 
 
@@ -17,11 +18,15 @@ TEMPLATE_FILES = {
     "input": TEMPLATE_FOLDER / "aoc_template_input.txt",
     "scratch": TEMPLATE_FOLDER / "aoc_template_scratch.py",
 }
+CACHE_FOLDER = PARENT_FOLDER / "aoc_cache"
+CACHE_CANARY_FILE = CACHE_FOLDER / "canary.txt"
 
 
 def _download_problem_input(day: int, year: int, cookie: str = None) -> str:
     if cookie is None:
         cookie = _read_config(CONFIG_SECRET_FILE)["auth"]["cookie"]
+    if not cookie:
+        return "No session cookie found. You'll need to copy the input manually."
     input_url = f"https://adventofcode.com/{year}/day/{day}/input"
     s = requests.Session()
     s.cookies.set("session", cookie)
@@ -34,8 +39,51 @@ def _write_input_to_file(file_path: Path, input_text: str) -> None:
         input_file.write(input_text)
 
 
-def setup_input_file(day: int, year: int, input_path: Path, cookie: str = None):
-    input_text = _download_problem_input(day, year, cookie)
+def _get_hash_key(cookie: str, day_str: str):
+    """
+    Returns a hashed string of the session cookie and the day string.
+    
+    This hash is used as the filename of a cached input file
+    to avoid collisions if the cookie has changed.
+    """
+    return md5(bytes(cookie + day_str, "utf-8")).hexdigest()
+
+def _write_canary(cookie: str) -> None:
+    with open(CACHE_CANARY_FILE, "w") as canary:
+        canary.write(cookie)
+
+def _clear_cache() -> None:
+    for cache_file in CACHE_FOLDER.iterdir():
+        Path.unlink(cache_file)
+
+def _canary_is_current(cookie: str) -> bool:
+    with open(CACHE_CANARY_FILE, "r") as canary_file:
+        canary_cookie = canary_file.read().strip()
+        return canary_cookie == cookie
+
+
+def get_input_data(day_str: str, year: int, cookie: str) -> str:
+    """
+    Returns input data from cached input file.
+    If cached input does not exist, create it, and read from it.
+    """
+    if not Path.exists(CACHE_FOLDER):
+        Path.mkdir(CACHE_FOLDER, parents=True)
+    if not (Path.exists(CACHE_CANARY_FILE) and _canary_is_current(cookie)):
+        _clear_cache()
+        _write_canary(cookie)
+    hash_key = _get_hash_key(cookie, day_str)
+    cached_input_file = CACHE_FOLDER / f"{hash_key}.txt"
+    if not Path.exists(cached_input_file):
+        input_data = _download_problem_input(int(day_str), year, cookie)
+        _write_input_to_file(cached_input_file, input_data)
+    with open(cached_input_file, "r") as input_file:
+        input_data = input_file.read().strip()
+    return input_data
+
+
+def setup_input_file(day_str: str, year: int, input_path: Path, cookie: str = None):
+    input_text = get_input_data(day_str, year, cookie)
     _write_input_to_file(input_path, input_text)
 
 
@@ -102,14 +150,20 @@ def _read_config(toml_path: Path):
 def main(day: int):
     config = _read_config(CONFIG_FILE)["setup"]
     year = config["year"]
+    cookie = _read_config(CONFIG_SECRET_FILE)["auth"]["cookie"]
     day_str = _format_day_string(day)
     intro_comment = _build_intro_comment(day_str, config)
     problem_folder = PARENT_FOLDER / f"day_{day_str}"
     file_names = build_template_file_names(day_str, year)
     populate_problem_folder(problem_folder, file_names)
     write_problem_file(problem_folder, file_names["problem"], intro_comment)
-    setup_input_file(day, year, problem_folder / file_names["input"])
+    setup_input_file(day_str, year, problem_folder / file_names["input"], cookie)
 
 
 if __name__ == "__main__":
     raise SystemExit(cli())
+    # _clear_cache()
+    # _write_canary("")
+    # cookie = _read_config(CONFIG_SECRET_FILE)["auth"]["cookie"]
+    # print(get_input_data("01", cookie, 2021))
+

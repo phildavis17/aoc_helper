@@ -168,3 +168,4 @@ cython_debug/
 # aoc_helpter custom
 scratch*
 *secret*
+aoc_cache/
