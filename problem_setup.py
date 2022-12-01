@@ -162,8 +162,5 @@ def main(day: int):
 
 if __name__ == "__main__":
     raise SystemExit(cli())
-    # _clear_cache()
-    # _write_canary("")
-    # cookie = _read_config(CONFIG_SECRET_FILE)["auth"]["cookie"]
-    # print(get_input_data("01", cookie, 2021))
+    
 
