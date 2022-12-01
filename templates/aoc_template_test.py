@@ -44,9 +44,9 @@ def test_part_1_problem(problem_input):
 
 def test_part_2_sample(sample_input):
     """Checks part 2 against a known answer, using sample input."""
-    assert problem_file.part_1(sample_input) == 0
+    assert problem_file.part_2(sample_input) == 0
 
 
 def test_part_2_problem(problem_input):
     """Checks part 2 against a known answer, using problem input."""
-    assert problem_file.part_1(problem_input) == 0
+    assert problem_file.part_2(problem_input) == 0
