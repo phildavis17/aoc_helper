@@ -28,9 +28,12 @@ def _download_problem_input(day: int, year: int, cookie: str = None) -> str:
     if not cookie:
         return "No session cookie found. You'll need to copy the input manually."
     input_url = f"https://adventofcode.com/{year}/day/{day}/input"
+    headers = {
+        "User-Agent": "https://github.com/phildavis17/aoc_helper"
+    }
     s = requests.Session()
     s.cookies.set("session", cookie)
-    input_text = s.get(input_url).text
+    input_text = s.get(input_url, headers=headers).text
     return input_text
 
 

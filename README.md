@@ -82,3 +82,6 @@ The `just` interface doesn't do anything sophisticated with the tests, so you ca
 
 ### Logging
 By default, code will be run with a logging level of `WARNING`, but `$ just debug 2 1` will run part 1 of day 2 using sample input with the logging level set to `DEGBUG`. This allows you to include logging statements that are helpful while working through a problem, but won't clutter your output when you're solving.
+
+### Caching
+When first downloaded, problem inputs are written to a local cache folder. As long as the session cookie has not changed, problem inputs will be read from this local cache instead of the AoC website when `$ just setup` is run. 
